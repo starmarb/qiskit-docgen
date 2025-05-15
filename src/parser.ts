@@ -13,6 +13,10 @@ interface CircuitData {
   gates: Gate[];
 }
 
+const gateSet = new Set(["h", "cx", "x", "y", "z", "s", "sdg", "t", "tdg", "rx", "ry", "rz", "cy", "cz", "swap", "crz", "cry", "crz", "ccx", "id", "u", "u3"]);
+const specialGates = new Set(["measure", "reset", "draw", "barrier"]);
+
+
 // Main parsing function
 export function parseCircuit(filePath: string): CircuitData {
   const fileContent = fs.readFileSync(filePath, 'utf-8');
@@ -39,8 +43,14 @@ export function parseCircuit(filePath: string): CircuitData {
       const matchGate = trimmedLine.match(gateRegex);
       if (matchGate) {
         const gateName = matchGate[1];
-        const qubitArgs = matchGate[2].split(',').map(q => parseInt(q.trim(), 10));
-        gates.push({ name: gateName, qubits: qubitArgs });
+        if (gateSet.has(gateName)) {
+            const qubitArgs = matchGate[2].split(',').map(q => parseInt(q.trim(), 10));
+            gates.push({ name: gateName, qubits: qubitArgs });
+        }
+        else if (specialGates.has(gateName)) {
+            const qubitArgs = matchGate[2].split(',').map(q => parseInt(q.trim(), 10));
+            gates.push({ name: gateName, qubits: qubitArgs });
+        }
       }
     }
   }
