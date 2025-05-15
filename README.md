@@ -15,3 +15,21 @@
 
 ```bash
 npx qiskit-docgen ./examples/bell.py --output ./docs/bell.md --annotate
+
+
+project structure: 
+qiskit-docgen/
+├── src/
+│   ├── cli.ts              # Handles CLI args, entrypoint
+│   ├── parser.ts           # Parses Qiskit Python files
+│   ├── docgen.ts           # Creates markdown explanations
+│   └── utils/              # Helper functions
+├── examples/
+│   ├── bell.py             # Sample input
+│   └── bell.md             # Sample output
+├── __tests__/              # Unit tests for core logic
+├── .github/workflows/ci.yml # Lint + test on push
+├── .eslintrc.json          # Code quality
+├── package.json
+├── tsconfig.json
+└── README.md

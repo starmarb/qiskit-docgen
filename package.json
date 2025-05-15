@@ -1,0 +1,26 @@
+{
+  "name": "qiskit-docgen",
+  "version": "1.0.0",
+  "description": "> Generate clean, readable docs from your Qiskit quantum circuits.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/starmarb/qiskit-docgen.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/starmarb/qiskit-docgen/issues"
+  },
+  "homepage": "https://github.com/starmarb/qiskit-docgen#readme",
+  "dependencies": {
+    "@types/node": "^22.15.18",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  }
+}
