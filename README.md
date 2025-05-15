@@ -15,9 +15,9 @@
 
 ```bash
 npx qiskit-docgen ./examples/bell.py --output ./docs/bell.md --annotate
+```
 
-
-project structure: 
+## Project Structure: 
 qiskit-docgen/
 ├── src/
 │   ├── cli.ts              # Handles CLI args, entrypoint
