@@ -2,7 +2,7 @@
 
 > Generate clean, readable docs from your Qiskit quantum circuits.
 
-`qiskit-docgen` is a CLI tool that takes a Qiskit Python file and outputs a human-readable explanation of the circuit — as Markdown, optionally with inline code comments or rendered circuit diagrams.
+`qiskit-docgen` is a CLI tool that takes a Qiskit Python file and outputs a human-readable explanation of the circuit as Markdown, optionally with inline code comments or rendered circuit diagrams.
 
 ## Features
 
