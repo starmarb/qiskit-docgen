@@ -16,7 +16,6 @@
 ```bash
 npx qiskit-docgen ./examples/bell.py --output ./docs/bell.md --annotate
 ```
-
 ## Project Structure: 
 ```bash
 qiskit-docgen/
