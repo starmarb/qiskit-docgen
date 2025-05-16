@@ -79,7 +79,7 @@ export function parseCircuit(filePath: string): CircuitData {
   let qubitNum = 0;
   const gates: Gate[] = [];
 
-  function getGate(gateName: string, qubits: number[]):string {
+  function getGate(gateName: string, qubits: number[], params: string[]):string {
     const def = gateDef[gateName];
     return def 
     .replace("${qubit}", `qubit ${qubits[0] ?? "?"}`)
@@ -87,7 +87,10 @@ export function parseCircuit(filePath: string): CircuitData {
     .replace("${target}", `qubit ${qubits[1] ?? "?"}`)
     .replace("${qubit1}", `qubit ${qubits[0] ?? "?"}`)
     .replace("${qubit2}", `qubit ${qubits[1] ?? "?"}`)
-    .replace("${qubit3}", `qubit ${qubits[2] ?? "?"}`);
+    .replace("${qubit3}", `qubit ${qubits[2] ?? "?"}`)
+    .replace("${theta}", params[0] ?? "?")
+    .replace("${phi}", params[1] ?? "?")
+    .replace("${lambda}", params[2] ?? "?");
   }
 
   for (const line of lines) {
@@ -107,14 +110,34 @@ export function parseCircuit(filePath: string): CircuitData {
     if (circuitName) {
       const gateRegex = new RegExp(`^${circuitName}\\.([a-zA-Z_][a-zA-Z0-9_]*)\\((.*?)\\)`);
       const matchGate = trimmedLine.match(gateRegex);
+
       if (matchGate) {
         const gateName = matchGate[1];
+
         if (gateName in gateNameMap) { 
-          const qubitArgs = matchGate[2].split(',').map(q => parseInt(q.trim(), 10));
-          const gateInfo = getGate(gateName, qubitArgs);
-          markdown += `### ${gateNameMap[gateName]} Gate on ${qubitArgs}\n` ;
-          markdown += `${gateInfo}\n`;
-          gates.push({ name: gateNameMap[gateName], qubits: qubitArgs });
+          const rawArgs = matchGate[2].split(',').map(arg => arg.trim());
+          const allNumbers = rawArgs.map(x => isNaN(Number(x)) ? x : Number(x));
+          let qubits: number[] = [];
+          let params: string[] = [];
+
+          // check if it's a rotation gate
+          if (["u", "u3"].includes(gateName)) {
+            qubits = [Number(allNumbers[3])];
+            params = allNumbers.splice(0,3).map(String);
+          }
+           else if (["u1", "u2"].includes(gateName)) {
+            params = allNumbers.slice(0, allNumbers.length - 1).map(String);
+            qubits = [Number(allNumbers[allNumbers.length - 1])];
+          } else if (["rx", "ry", "rz"].includes(gateName)) {
+            params = [String(allNumbers[0])];
+            qubits = [Number(allNumbers[1])];
+          } else {
+            qubits = allNumbers.map(Number);
+          }
+          const gateInfo = getGate(gateName, qubits, params);
+          markdown += `### ${gateNameMap[gateName]} Gate on ${qubits}\n` ;
+          markdown += `${gateInfo}\n\n`;
+          gates.push({ name: gateNameMap[gateName], qubits: qubits });
         }
       }
     }
@@ -125,4 +148,14 @@ export function parseCircuit(filePath: string): CircuitData {
     qubitNum,
     gates
   };
+}
+const isMain = import.meta.url === process.argv[1] || import.meta.url === `file://${process.argv[1]}`;
+
+if (isMain) {
+  const filePath = process.argv[2];
+  if (!filePath) {
+    console.error("Usage: ts-node parser.ts <path-to-python-file>");
+    process.exit(1);
+  }
+  parseCircuit(filePath);
 }
