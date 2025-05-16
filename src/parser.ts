@@ -57,14 +57,14 @@ const gateNameMap: Record<string, string> = {
     ccx: "Toffoli (CCX) flips the target ${qubit} only if **both** control ${control1} and ${control2} are |1⟩.",
     swap: "SWAP exchanges the quantum states between ${qubit1} and ${qubit2}.",
     //Rotation
-    rx: "RX rotates ${qubit} around the X-axis by a given angle.",
-    ry: "RY rotates ${qubit} around the Y-axis by a given angle.",
-    rz: "RZ rotates ${qubit} around the Z-axis by a given angle.",
+    rx: "RX rotates ${qubit} around the X-axis by ${theta}",
+    ry: "RY rotates ${qubit} around the Y-axis by ${theta}",
+    rz: "RZ rotates ${qubit} around the Z-axis by ${theta}",
     //Universal Single qubit 
-    u: "U will apply a rotation to the ${qubit}, defined by ${theta}, ${phi}, ${lambda}",
+    u: "U rotates ${qubit} with angles θ = ${theta}, φ = ${phi}, and λ = ${lambda}.",
     u1: "U1 applies a pure Z rotation (a phase shift) of ${lambda} to ${qubit}.",
     u2: "U2 is a π/2 rotation around the Bloch sphere for ${qubit}.",
-    u3: "U3 is the most general single-qubit rotation gate applied to ${qubit}.",
+    u3: "U3 rotates ${qubit} with angles θ = ${theta}, φ = ${phi}, and λ = ${lambda}.",
     //measurement
     measure: "Measurement collapses the state into classical 0 or 1 based on probability."
   };  
